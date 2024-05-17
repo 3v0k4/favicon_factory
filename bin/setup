@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+
+GEM_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+FileUtils.chdir GEM_ROOT do
+  system! "gem install bundler --conservative"
+  system("bundle check") || system!("bundle install")
+
+  case Gem::Platform.local.os
+  when "darwin"
+    system! "brew install imagemagick"
+    system! "brew install inkscape"
+  when "linux"
+    system! "sudo apt install imagemagick"
+    system! "sudo apt install inkscape"
+  else
+    raise "Unsupported platform: #{Gem::Platform.local.os}"
+  end
+end

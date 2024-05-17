@@ -1,0 +1,23 @@
+require:
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-thread_safety
+
+AllCops:
+  TargetRubyVersion: 2.6
+  NewCops: enable
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Layout/LineLength:
+  Max: 120
+
+ThreadSafety/NewThread:
+  Enabled: false
