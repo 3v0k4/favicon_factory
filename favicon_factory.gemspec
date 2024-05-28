@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "mini_magick", "~> 4.12"
+  spec.add_dependency "ruby-vips", "~> 2.2"
   spec.add_dependency "tty-option", "~> 0.3.0"
   spec.add_dependency "tty-which", "~> 0.5.0"
 

@@ -17,9 +17,12 @@ FileUtils.chdir GEM_ROOT do
   when "darwin"
     system! "brew install imagemagick"
     system! "brew install inkscape"
+    system! "brew install vips"
   when "linux"
-    system! "sudo apt install imagemagick"
-    system! "sudo apt install inkscape"
+    system! "sudo apt-get install imagemagick" # for v7 consider https://github.com/SoftCreatR/imei/
+    system! "sudo apt-get install inkscape"
+    system! "sudo apt-get install libvips"
+    system! "sudo apt-get install libvips-tools"
   else
     raise "Unsupported platform: #{Gem::Platform.local.os}"
   end

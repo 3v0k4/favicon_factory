@@ -1,4 +1,4 @@
-name: Ruby
+name: Test
 
 on:
   push:
@@ -14,14 +14,13 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.3'
-
+          - 3.3
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
-    - run: bin/setup
-    - run: bin/rake test
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bin/rake test:unit
+      - run: bin/rake test:e2e
