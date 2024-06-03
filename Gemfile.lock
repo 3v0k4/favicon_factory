@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    favicon_factory (0.1.0)
+    favicon_factory (0.2.0)
       mini_magick (~> 4.12)
       ruby-vips (~> 2.2)
       tty-option (~> 0.3.0)
