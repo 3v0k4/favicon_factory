@@ -4,6 +4,8 @@
   <img width="200" width="200" src=".github/images/favicon_factory.svg" />
 </div>
 
+Tired of managing dozens of favicons to support all the browsers, resolutions, and formats?
+
 `favicon_factory` generates from an SVG the minimal set of icons needed by modern browsers.
 
 The source SVG is ideal for [modern browsers](https://caniuse.com/link-icon-svg). And it may contain a `<style>` tag with `@media (prefers-color-scheme: dark)` to support light/dark themes, which is ignored when generating favicons.
