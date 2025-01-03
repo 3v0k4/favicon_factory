@@ -1,10 +1,4 @@
 PATH
-  remote: ../degem
-  specs:
-    degem (0.3.0)
-      prism (~> 1.2)
-
-PATH
   remote: .
   specs:
     favicon_factory (0.2.0)
@@ -26,7 +20,6 @@ GEM
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
-    prism (1.2.0)
     racc (1.7.3)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -69,7 +62,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  degem (~> 0.3.0)!
   favicon_factory!
   minitest (~> 5.16)
   rake (~> 13.0)
