@@ -19,7 +19,7 @@ Icons will be generated in the same folder as the source SVG unless already exis
 ## Users
 
 <p>
-  <a href="https://rictionary.odone.io">
+  <a href="https://rictionary.odone.me">
     <img width="100" width="100" hspace="10" src=".github/images/rictionary.svg" />
   </a>
 
