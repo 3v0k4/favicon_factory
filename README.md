@@ -26,6 +26,10 @@ Icons will be generated in the same folder as the source SVG unless already exis
   <a href="https://typescript.tips">
     <img width="100" width="100" hspace="10" src=".github/images/typescript-tips.svg" />
   </a>
+
+  <a href="https://hotdocsrails.com">
+    <img width="100" width="100" hspace="10" src=".github/images/hot_docs.svg" />
+  </a>
 </p>
 
 ## Installation
