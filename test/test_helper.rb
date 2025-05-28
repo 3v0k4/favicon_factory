@@ -19,6 +19,8 @@ class TestAdapter < FaviconFactory::BaseAdapter
   def png!(path, params, size); end
 
   def touch!(path, params); end
+
+  def mask!(path, params); end
 end
 
 def with_svg
