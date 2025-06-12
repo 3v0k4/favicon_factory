@@ -30,7 +30,7 @@ module FaviconFactory
 
         - `favicon.ico` (32x32) for legacy browsers; serve it from `/favicon.ico` because tools, like RSS readers, just look there.
         - `apple-touch-icon.png` (180x180) for Apple devices when adding a webpage to the home screen; a background and a padding around the icon is applied to make it look pretty.
-        - `manifest.webmanifest` that includes `icon-192.png`, `icon-mask.png`, and `icon-512.png` for Android devices; the first for display on the home screen, the second for different Android launchers, and the last for the splash screen while the PWA is loading.
+        - `manifest.webmanifest` that includes `icon-192.png`, `icon-512.png`, and `icon-mask.png` for Android devices; the first for display on the home screen, the second for different Android launchers, and the last for the splash screen while the PWA is loading.
       DESC
 
       example "favicon_factory path/to/favicon.svg"
@@ -168,8 +168,8 @@ module FaviconFactory
       {
         "favicon.ico" => method(:ico!),
         "icon-192.png" => method(:png_192!),
-        "icon-mask.png" => method(:png_mask!),
         "icon-512.png" => method(:png_512!),
+        "icon-mask.png" => method(:png_mask!),
         "apple-touch-icon.png" => method(:touch!),
         "manifest.webmanifest" => method(:manifest!)
       }
@@ -192,8 +192,8 @@ module FaviconFactory
       data = {
         icons: [
           { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
-          { src: "/icon-mask.png", type: "image/png", sizes: "512x512", purpose: "maskable" },
           { src: "/icon-512.png", type: "image/png", sizes: "512x512" }
+          { src: "/icon-mask.png", type: "image/png", sizes: "512x512", purpose: "maskable" },
         ]
       }
       file.write(path, JSON.pretty_generate(data))
