@@ -213,22 +213,24 @@ module FaviconFactory
     end
 
     def touch!(path, params)
-      generate_padded(180, params.background, params.favicon_svg, 160, path)
-    end
-
-    def mask!(path, params)
-      generate_padded(512, params.background, params.favicon_svg, 409, path)
-    end
-
-    private
-
-    def generate_padded(size, background, *args)
-      generate(*args) do |image|
+      size = 180
+      generate(params.favicon_svg, 160, path) do |image|
         image = image.gravity("centre", size, size)
-        pixel = (Vips::Image.black(1, 1) + hex2rgb(background)).cast(:uchar)
+        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
         pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
       end
     end
+
+    def mask!(path, params)
+      size = 512
+      generate(params.favicon_svg, 409, path) do |image|
+        image = image.gravity("centre", size, size)
+        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
+        pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
+      end
+    end
+
+    private
 
     def generate(svg, size, path)
       image = Vips::Image.thumbnail(svg, size)
@@ -265,20 +267,20 @@ module FaviconFactory
     end
 
     def touch!(path, params)
-      generate_padded 180, 160, params.background, path
-    end
-
-    def mask!(path, params)
-      generate_padded 512, 409, params.background, path
-    end
-
-    private
-
-    def generate_padded(size, *args)
-      generate(*args) do |convert|
+      size = 180
+      generate(160, params.background, path) do |convert|
         convert.gravity("center").extent("#{size}x#{size}")
       end
     end
+
+    def mask!(path, params)
+      size = 512
+      generate(409, params.background, path) do |convert|
+        convert.gravity("center").extent("#{size}x#{size}")
+      end
+    end
+
+    private
 
     def generate(size, background, path)
       MiniMagick::Tool::Convert.new do |convert|
