@@ -1,5 +1,7 @@
 ## [Unreleased] - Date
 
+- Add support for icon-mask.png
+
 ## [0.2.0]
 
 - Add support for Vips #1
