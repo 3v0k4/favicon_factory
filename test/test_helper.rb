@@ -9,6 +9,7 @@ TARGETS = [
   "favicon.ico",
   "icon-192.png",
   "icon-512.png",
+  "icon-mask.png",
   "apple-touch-icon.png",
   "manifest.webmanifest"
 ].freeze
