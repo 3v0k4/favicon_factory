@@ -12,7 +12,7 @@ module FaviconFactory
     end
 
     def ico!(path, params)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick.convert do |convert|
         convert.density(SVG_DENSITY).background("none")
         convert << params.favicon_svg
         convert.resize("32x32")
@@ -21,7 +21,7 @@ module FaviconFactory
     end
 
     def png!(path, params, size)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick.convert do |convert|
         convert.density(SVG_DENSITY).background("none")
         convert << params.favicon_svg
         convert.resize("#{size}x#{size}")
@@ -30,7 +30,7 @@ module FaviconFactory
     end
 
     def touch!(path, params)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick.convert do |convert|
         convert.density(SVG_DENSITY).background(params.background)
         convert << params.favicon_svg
         convert.resize("160x160")
@@ -40,7 +40,7 @@ module FaviconFactory
     end
 
     def mask!(path, params)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick.convert do |convert|
         convert.density(SVG_DENSITY).background(params.background)
         convert << params.favicon_svg
         convert.resize("409x409")
