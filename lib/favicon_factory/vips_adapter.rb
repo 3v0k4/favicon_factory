@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FaviconFactory
   class VipsAdapter < BaseAdapter
     def ico!(path, params)

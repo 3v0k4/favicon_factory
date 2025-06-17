@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FaviconFactory
   Params = Data.define(:favicon_svg, :background) do
     def dir

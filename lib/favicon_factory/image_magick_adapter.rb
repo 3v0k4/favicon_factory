@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FaviconFactory
   class ImageMagickAdapter < BaseAdapter
     SVG_DENSITY = 1_000
