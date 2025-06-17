@@ -12,37 +12,39 @@ module FaviconFactory
     end
 
     def ico!(path, params)
-      generate 32, "none", path
+      MiniMagick::Tool::Convert.new do |convert|
+        convert.density(SVG_DENSITY).background("none")
+        convert << params.favicon_svg
+        convert.resize("32x32")
+        convert << path
+      end
     end
 
     def png!(path, params, size)
-      generate size, "none", path
+      MiniMagick::Tool::Convert.new do |convert|
+        convert.density(SVG_DENSITY).background("none")
+        convert << params.favicon_svg
+        convert.resize("#{size}x#{size}")
+        convert << path
+      end
     end
 
     def touch!(path, params)
-      size = 180
-      generate(160, params.background, path) do |convert|
-        convert.gravity("center").extent("#{size}x#{size}")
+      MiniMagick::Tool::Convert.new do |convert|
+        convert.density(SVG_DENSITY).background(params.background)
+        convert << params.favicon_svg
+        convert.resize("160x160")
+        convert.gravity("center").extent("180x180")
+        convert << path
       end
     end
 
     def mask!(path, params)
-      size = 512
-      generate(409, params.background, path) do |convert|
-        convert.gravity("center").extent("#{size}x#{size}")
-      end
-    end
-
-    private
-
-    def generate(size, background, path)
       MiniMagick::Tool::Convert.new do |convert|
-        convert.density(SVG_DENSITY).background(background)
+        convert.density(SVG_DENSITY).background(params.background)
         convert << params.favicon_svg
-        convert.resize("#{size}x#{size}")
-        if block_given?
-          convert = yield(convert)
-        end
+        convert.resize("409x409")
+        convert.gravity("center").extent("512x512")
         convert << path
       end
     end

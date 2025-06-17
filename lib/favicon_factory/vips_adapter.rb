@@ -12,35 +12,26 @@ module FaviconFactory
     end
 
     def png!(path, params, size)
-      generate(params.favicon_svg, size, path)
+      Vips::Image.thumbnail(params.favicon_svg, size).write_to_file(path)
     end
 
     def touch!(path, params)
-      size = 180
-      generate(params.favicon_svg, 160, path) do |image|
-        image = image.gravity("centre", size, size)
-        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
-        pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
-      end
+      svg = Vips::Image.thumbnail(params.favicon_svg, 160).gravity("centre", 180, 180)
+      image = square(180, params.background).composite(svg, :over)
+      image.write_to_file(path)
     end
 
     def mask!(path, params)
-      size = 512
-      generate(params.favicon_svg, 409, path) do |image|
-        image = image.gravity("centre", size, size)
-        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
-        pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
-      end
+      svg = Vips::Image.thumbnail(params.favicon_svg, 409).gravity("centre", 512, 512)
+      image = square(512, params.background).composite(svg, :over)
+      image.write_to_file(path)
     end
 
     private
 
-    def generate(svg, size, path)
-      image = Vips::Image.thumbnail(svg, size)
-      if block_given?
-        image = yield(image)
-      end
-      image.write_to_file(path)
+    def square(size, hex)
+      pixel = (Vips::Image.black(1, 1) + hex2rgb(hex)).cast(:uchar)
+      pixel.embed(0, 0, size, size, extend: :copy)
     end
 
     def hex2rgb(hex)
