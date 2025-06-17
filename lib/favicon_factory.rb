@@ -30,7 +30,7 @@ module FaviconFactory
 
         - `favicon.ico` (32x32) for legacy browsers; serve it from `/favicon.ico` because tools, like RSS readers, just look there.
         - `apple-touch-icon.png` (180x180) for Apple devices when adding a webpage to the home screen; a background and a padding around the icon is applied to make it look pretty.
-        - `manifest.webmanifest` that includes `icon-192.png` and `icon-512.png` for Android devices; the former for display on the home screen, and the latter for the splash screen while the PWA is loading.
+        - `manifest.webmanifest` that includes `icon-192.png`, `icon-512.png`, and `icon-mask.png` for Android devices; the first for display on the home screen, the second for different Android launchers, and the last for the splash screen while the PWA is loading.
       DESC
 
       example "favicon_factory path/to/favicon.svg"
@@ -169,6 +169,7 @@ module FaviconFactory
         "favicon.ico" => method(:ico!),
         "icon-192.png" => method(:png_192!),
         "icon-512.png" => method(:png_512!),
+        "icon-mask.png" => method(:png_mask!),
         "apple-touch-icon.png" => method(:touch!),
         "manifest.webmanifest" => method(:manifest!)
       }
@@ -182,15 +183,20 @@ module FaviconFactory
       png!(path, params, 512)
     end
 
+    def png_mask!(path, params)
+      mask!(path, params)
+    end
+
     def manifest!(path, _params)
-      file.write(path, <<~MANIFEST)
-        {
-          "icons": [
-            { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
-            { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
-          ]
-        }
-      MANIFEST
+      require "json"
+      data = {
+        icons: [
+          { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
+          { src: "/icon-512.png", type: "image/png", sizes: "512x512" },
+          { src: "/icon-mask.png", type: "image/png", sizes: "512x512", purpose: "maskable" },
+        ]
+      }
+      file.write(path, JSON.pretty_generate(data))
     end
   end
 
@@ -203,20 +209,35 @@ module FaviconFactory
     end
 
     def png!(path, params, size)
-      Vips::Image.thumbnail(params.favicon_svg, size).write_to_file(path)
+      generate(params.favicon_svg, size, path)
     end
 
     def touch!(path, params)
-      svg = Vips::Image.thumbnail(params.favicon_svg, 160).gravity("centre", 180, 180)
-      image = square(180, params.background).composite(svg, :over)
-      image.write_to_file(path)
+      size = 180
+      generate(params.favicon_svg, 160, path) do |image|
+        image = image.gravity("centre", size, size)
+        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
+        pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
+      end
+    end
+
+    def mask!(path, params)
+      size = 512
+      generate(params.favicon_svg, 409, path) do |image|
+        image = image.gravity("centre", size, size)
+        pixel = (Vips::Image.black(1, 1) + hex2rgb(params.background)).cast(:uchar)
+        pixel.embed(0, 0, size, size, extend: :copy).composite(image, :over)
+      end
     end
 
     private
 
-    def square(size, hex)
-      pixel = (Vips::Image.black(1, 1) + hex2rgb(hex)).cast(:uchar)
-      pixel.embed 0, 0, size, size, extend: :copy
+    def generate(svg, size, path)
+      image = Vips::Image.thumbnail(svg, size)
+      if block_given?
+        image = yield(image)
+      end
+      image.write_to_file(path)
     end
 
     def hex2rgb(hex)
@@ -238,28 +259,37 @@ module FaviconFactory
     end
 
     def ico!(path, params)
-      MiniMagick::Tool::Convert.new do |convert|
-        convert.density(SVG_DENSITY).background("none")
-        convert << params.favicon_svg
-        convert.resize("32x32")
-        convert << path
-      end
+      generate 32, "none", path
     end
 
     def png!(path, params, size)
-      MiniMagick::Tool::Convert.new do |convert|
-        convert.density(SVG_DENSITY).background("none")
-        convert << params.favicon_svg
-        convert.resize("#{size}x#{size}")
-        convert << path
-      end
+      generate size, "none", path
     end
 
     def touch!(path, params)
+      size = 180
+      generate(160, params.background, path) do |convert|
+        convert.gravity("center").extent("#{size}x#{size}")
+      end
+    end
+
+    def mask!(path, params)
+      size = 512
+      generate(409, params.background, path) do |convert|
+        convert.gravity("center").extent("#{size}x#{size}")
+      end
+    end
+
+    private
+
+    def generate(size, background, path)
       MiniMagick::Tool::Convert.new do |convert|
-        convert.density(SVG_DENSITY).background(params.background)
+        convert.density(SVG_DENSITY).background(background)
         convert << params.favicon_svg
-        convert.resize("160x160").gravity("center").extent("180x180")
+        convert.resize("#{size}x#{size}")
+        if block_given?
+          convert = yield(convert)
+        end
         convert << path
       end
     end

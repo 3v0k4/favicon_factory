@@ -9,6 +9,7 @@ TARGETS = [
   "favicon.ico",
   "icon-192.png",
   "icon-512.png",
+  "icon-mask.png",
   "apple-touch-icon.png",
   "manifest.webmanifest"
 ].freeze
@@ -19,6 +20,8 @@ class TestAdapter < FaviconFactory::BaseAdapter
   def png!(path, params, size); end
 
   def touch!(path, params); end
+
+  def mask!(path, params); end
 end
 
 def with_svg

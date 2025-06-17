@@ -14,7 +14,7 @@ Icons will be generated in the same folder as the source SVG unless already exis
 
 - `favicon.ico` (32x32) for legacy browsers; serve it from `/favicon.ico` because tools, like RSS readers, just look there.
 - `apple-touch-icon.png` (180x180) for Apple devices when adding a webpage to the home screen; a background and a padding around the icon is applied to make it look pretty.
-- `manifest.webmanifest` that includes `icon-192.png` and `icon-512.png` for Android devices; the former for display on the home screen, and the latter for the splash screen while the PWA is loading.
+- `manifest.webmanifest` that includes `icon-192.png`, `icon-512.png`, and `icon-mask.png` for Android devices; the first two for display on the home screen and on splash screen while the PWA is loading, respectively, and the last one for different Android launchers.
 
 ## Users
 
@@ -81,6 +81,7 @@ favicon_factory samples/favicon.svg
 # Info: Generating samples/favicon.ico
 # Info: Generating samples/icon-192.png
 # Info: Generating samples/icon-512.png
+# Info: Generating samples/icon-mask.png
 # Info: Generating samples/apple-touch-icon.png
 # Info: Generating samples/manifest.webmanifest
 # Info: Add the following to the `<head>`
