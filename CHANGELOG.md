@@ -1,6 +1,7 @@
 ## [Unreleased] - Date
 
 - Add support for icon-mask.png #3
+- Update dependencies
 
 ## [0.2.0]
 
