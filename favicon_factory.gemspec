@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "json"
   spec.add_dependency "mini_magick", "~> 4.12"
   spec.add_dependency "ruby-vips", "~> 2.2"
   spec.add_dependency "tty-option", "~> 0.3.0"

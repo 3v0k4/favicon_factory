@@ -73,15 +73,28 @@ module FaviconFactory
     end
 
     def manifest!(path, _params)
-      require "json"
-      data = {
-        icons: [
-          { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
-          { src: "/icon-512.png", type: "image/png", sizes: "512x512" },
-          { src: "/icon-mask.png", type: "image/png", sizes: "512x512", purpose: "maskable" },
-        ]
-      }
-      file.write(path, JSON.pretty_generate(data))
+      file.write(path, <<~MANIFEST.chomp)
+        {
+          "icons": [
+            {
+              "src": "/icon-192.png",
+              "type": "image/png",
+              "sizes": "192x192"
+            },
+            {
+              "src": "/icon-512.png",
+              "type": "image/png",
+              "sizes": "512x512"
+            },
+            {
+              "src": "/icon-mask.png",
+              "type": "image/png",
+              "sizes": "512x512",
+              "purpose": "maskable"
+            }
+          ]
+        }
+      MANIFEST
     end
   end
 end
