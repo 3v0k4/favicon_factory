@@ -71,7 +71,7 @@ gem install favicon_factory
 
 ## Usage
 
-To generate the favicons (see `samples/` for an example set):
+To generate the favicons:
 
 ```bash
 favicon_factory samples/favicon.svg
@@ -94,6 +94,20 @@ To show all the options:
 
 ```bash
 favicon_factory --help
+```
+
+## Samples
+
+See the samples in `samples/`.
+
+To recreate them:
+
+```bash
+docker run -v $(pwd):/usr/src/app $(docker build -q .) bash -c "bin/favicon_factory -b '#ffffff' samples/github.com/vips/favicon.svg"
+docker run -v $(pwd):/usr/src/app $(docker build -q .) bash -c "unpath libvips unpath libvips-tools unpath vips bin/favicon_factory -b '#ffffff' samples/github.com/image_magick/favicon.svg"
+
+docker run -v $(pwd):/usr/src/app $(docker build -q .) bash -c "bin/favicon_factory -b '#f5ebdb' samples/rictionary/vips/favicon.svg"
+docker run -v $(pwd):/usr/src/app $(docker build -q .) bash -c "unpath libvips unpath libvips-tools unpath vips bin/favicon_factory -b '#f5ebdb' samples/rictionary/image_magick/favicon.svg"
 ```
 
 ## Development
