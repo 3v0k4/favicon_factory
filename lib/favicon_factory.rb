@@ -5,9 +5,6 @@ require_relative "favicon_factory/command"
 require_relative "favicon_factory/cli"
 require_relative "favicon_factory/base_adapter"
 
-autoload(:MiniMagick, "mini_magick")
-autoload(:Vips, "vips")
-
 module FaviconFactory
   autoload(:ImageMagickAdapter, "favicon_factory/image_magick_adapter")
   autoload(:VipsAdapter, "favicon_factory/vips_adapter")
