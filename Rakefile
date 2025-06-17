@@ -23,7 +23,7 @@ namespace :test do
     statuses = [
       ["bin/rake test N=/e2e__with_deps/"],
       ["#{unpath_vips} bin/rake test N=/e2e__with_deps/"],
-      ["apt-get remove -y --purge *imagemagick* inkscape libvips libvips-tools && bin/rake test N=/e2e__without_deps/"],
+      ["apt-get remove -y --purge *imagemagick* libvips libvips-tools && bin/rake test N=/e2e__without_deps/"],
       ["#{unpath_vips} bin/rake test N=/e2e__with_deps/", "--build-arg IMAGE_MAGICK_VERSION=6.9.13-11"]
     ].map do |command, build_args|
       command = "docker run $(docker build -q #{build_args} .) bash -c '#{command}'"

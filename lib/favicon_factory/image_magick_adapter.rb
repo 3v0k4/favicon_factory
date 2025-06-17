@@ -1,5 +1,3 @@
-require "tty/which"
-
 module FaviconFactory
   class ImageMagickAdapter < BaseAdapter
     SVG_DENSITY = 1_000
@@ -7,7 +5,6 @@ module FaviconFactory
     def initialize(**)
       super
       stderr.puts "Warn: Install imagemagick v7 for best results, using v6" unless MiniMagick.imagemagick7?
-      stderr.puts "Warn: Inkscape not found, install it for best results" unless TTY::Which.which("inkscape")
     end
 
     def ico!(path, params)

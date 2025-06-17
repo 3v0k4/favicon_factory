@@ -16,11 +16,9 @@ FileUtils.chdir GEM_ROOT do
   case Gem::Platform.local.os
   when "darwin"
     system! "brew install imagemagick"
-    system! "brew install inkscape"
     system! "brew install vips"
   when "linux"
-    system! "sudo apt-get install imagemagick" # for v7 consider https://github.com/SoftCreatR/imei/
-    system! "sudo apt-get install inkscape"
+    system! "sudo apt-get install imagemagick" # consider https://github.com/SoftCreatR/imei/
     system! "sudo apt-get install libvips"
     system! "sudo apt-get install libvips-tools"
   else

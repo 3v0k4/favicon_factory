@@ -34,7 +34,7 @@ Icons will be generated in the same folder as the source SVG unless already exis
 
 ## Installation
 
-Vips or ImageMagick+Inkscape are required. If both are present, FaviconFactory defaults to Vips.
+Vips or ImageMagick are required. If both are present, FaviconFactory defaults to Vips.
 
 Vips:
 
@@ -47,16 +47,14 @@ sudo apt-get install libvips
 sudo apt-get install libvips-tools
 ```
 
-ImageMagick and Inkscape:
+ImageMagick:
 
 ```bash
 brew install imagemagick
-brew install inkscape
 ```
 
 ```bash
-sudo apt-get install imagemagick # for v7 consider https://github.com/SoftCreatR/imei/
-sudo apt-get install inkscape
+sudo apt-get install imagemagick # consider https://github.com/SoftCreatR/imei/
 ```
 
 Add `favicon_factory` to the Gemfile:

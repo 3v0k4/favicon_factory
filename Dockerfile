@@ -17,7 +17,6 @@ RUN t=$(mktemp) && \
     rm "$t"
 
 RUN apt-get update && apt-get install -y \
-    inkscape \
     libvips \
     libvips-tools && \
     rm -rf /var/lib/apt/lists/*
