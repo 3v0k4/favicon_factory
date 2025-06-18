@@ -57,7 +57,7 @@ module FaviconFactory
 
     def hex?(string)
       string = string.delete_prefix("#")
-      string.split("").all? { |char| char.match?(/^[0-9a-fA-F]$/) }
+      string.chars.all? { |char| char.match?(/^[0-9a-fA-F]$/) }
     end
 
     def exit_message(status, message)
