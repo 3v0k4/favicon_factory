@@ -11,7 +11,7 @@ module FaviconFactory
     def self.call
       adapter = BaseAdapter.find
       if adapter.nil?
-        stderr.puts "Error: Neither vips or imagemagick found, install one"
+        $stderr.puts "Error: Neither vips or imagemagick found, install one"
         exit 1
       end
       exit new(adapter: adapter, argv: ARGV, file: File, stderr: $stderr).call
