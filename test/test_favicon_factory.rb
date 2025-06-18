@@ -4,10 +4,20 @@ require "test_helper"
 require "stringio"
 
 class TestFaviconFactory < Minitest::Test
+  def test__when_no_adapters_installed__it_errors
+    argv = []
+    stderr = StringIO.new
+    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> {}).call
+
+    assert_equal 1, status
+    assert_match Regexp.new("Error: Neither vips or imagemagick found, install one"), stderr.string
+  end
+
+
   def test__with_no_args__it_errors_and_prints_usage
     argv = []
     stderr = StringIO.new
-    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: nil).call
+    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { FaviconFactory::BaseAdapter }).call
 
     assert_equal 1, status
     assert_match Regexp.new("Error: argument 'favicon_svg' must be provided"), stderr.string
@@ -16,7 +26,7 @@ class TestFaviconFactory < Minitest::Test
   def test__with_arg_not_being_an_svg__it_errors
     argv = ["one"]
     stderr = StringIO.new
-    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: nil).call
+    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { FaviconFactory::BaseAdapter }).call
 
     assert_equal 1, status
     assert_match Regexp.new("Error: one does not end with .svg"), stderr.string
@@ -25,7 +35,7 @@ class TestFaviconFactory < Minitest::Test
   def test__with_non_existing_svg__it_errors
     argv = ["one.svg"]
     stderr = StringIO.new
-    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: nil).call
+    status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { FaviconFactory::BaseAdapter }).call
 
     assert_equal 1, status
     assert_match Regexp.new("Error: one.svg does not exist"), stderr.string
@@ -35,7 +45,7 @@ class TestFaviconFactory < Minitest::Test
     ["--help", "-h"].each do |flag|
       argv = [flag]
       stderr = StringIO.new
-      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: nil).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { FaviconFactory::BaseAdapter }).call
 
       assert_equal 0, status
       assert_match Regexp.new("Usage:"), stderr.string
@@ -46,7 +56,7 @@ class TestFaviconFactory < Minitest::Test
     with_svg do |_dir, path|
       argv = ["--background", "blue", path]
       stderr = StringIO.new
-      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: nil).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { FaviconFactory::BaseAdapter }).call
 
       assert_equal 1, status
       assert_match Regexp.new("Error: blue is not a valid color, use a hex value like #0099ff"), stderr.string
@@ -58,7 +68,7 @@ class TestFaviconFactory < Minitest::Test
       TARGETS.each { FileUtils.touch(File.join(dir, _1)) }
       argv = [path]
       stderr = StringIO.new
-      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, adapter: TestAdapter).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: stderr, file: File, find_adapter: -> { TestAdapter }).call
 
       assert_equal 0, status
       TARGETS.each do |name|
@@ -83,21 +93,21 @@ class TestFaviconFactory < Minitest::Test
 
     with_svg do |_dir, path|
       argv = ["--background", "#0099ff", path]
-      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, adapter: TestAdapter).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, find_adapter: -> { TestAdapter }).call
 
       assert_equal 0, status
     end
 
     with_svg do |_dir, path|
       argv = [path, "--background=#0099ff"]
-      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, adapter: TestAdapter).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, find_adapter: -> { TestAdapter }).call
 
       assert_equal 0, status
     end
 
     with_svg do |_dir, path|
       argv = [path, "-b", "#0099ff"]
-      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, adapter: TestAdapter).call
+      status = FaviconFactory::Cli.new(argv: argv, stderr: StringIO.new, file: File, find_adapter: -> { TestAdapter }).call
 
       assert_equal 0, status
     end

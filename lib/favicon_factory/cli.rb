@@ -9,22 +9,23 @@ module FaviconFactory
 
   class Cli
     def self.call
-      adapter = BaseAdapter.find
-      if adapter.nil?
-        $stderr.puts "Error: Neither vips or imagemagick found, install one"
-        exit 1
-      end
-      exit new(adapter: adapter, argv: ARGV, file: File, stderr: $stderr).call
+      exit new(argv: ARGV, file: File, stderr: $stderr).call
     end
 
-    def initialize(adapter:, argv:, file:, stderr:)
-      @adapter = adapter
+    def initialize(argv:, file:, stderr:, find_adapter: -> { BaseAdapter.find })
       @argv = argv
       @file = file
       @stderr = stderr
+      @find_adapter = find_adapter
     end
 
     def call
+      adapter = find_adapter.call
+      if adapter.nil?
+        stderr.puts "Error: Neither vips or imagemagick found, install one"
+        return 1
+      end
+
       params, status = parse(argv)
       return status if status >= 0
 
@@ -34,7 +35,7 @@ module FaviconFactory
 
     private
 
-    attr_reader :stderr, :file, :adapter, :argv
+    attr_reader :stderr, :file, :find_adapter, :argv
 
     def parse(argv)
       command = Command.new.parse(argv)
