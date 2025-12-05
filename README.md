@@ -23,11 +23,11 @@ Icons will be generated in the same folder as the source SVG unless already exis
     <img width="100" width="100" hspace="10" src=".github/images/rictionary.svg" />
   </a>
 
-  <a href="https://typescript.tips">
+  <a href="https://typescript.odone.me">
     <img width="100" width="100" hspace="10" src=".github/images/typescript-tips.svg" />
   </a>
 
-  <a href="https://hotdocsrails.com">
+  <a href="https://hotdocsrails.odone.me">
     <img width="100" width="100" hspace="10" src=".github/images/hot_docs.svg" />
   </a>
 </p>
